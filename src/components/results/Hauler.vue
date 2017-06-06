@@ -1,7 +1,7 @@
 <template>
 	<div id="hauler">
 
-		<section class="panel panel-default">
+		<section v-if="$store.state.hauler.garbageDays" class="panel panel-default">
 			<header class="panel-heading">
 				<strong>Address:</strong>
 				{{ $store.state.hauler.hauler_data.Address }}
@@ -87,13 +87,17 @@ export default {
 	name: 'hauler-results',
 	methods: {
 		fetchHaulerInfo () {
-			this.$store.dispatch('fetchParcel').then(()=>{
-				if (this.$store.state.addr_form_resp_parcel) {
-					this.$store.dispatch('fetchHaulerInfo', this.$store.state.addr_form_resp_parcel.FOLIO)
-				} else {
-					this.$router.replace({ path: '/' })
-				}
-			})
+			if (this.$store.state.addr_form_resp_addr) {
+				this.$store.dispatch('fetchParcel').then(()=>{
+					if (this.$store.state.addr_form_resp_parcel) {
+						this.$store.dispatch('fetchHaulerInfo', this.$store.state.addr_form_resp_parcel.FOLIO)
+					} else {
+						this.$router.replace({ path: '/' })
+					}
+				})
+			} else {
+				this.$router.replace({ path: '/' })
+			}
 		}
 	},
 	watch: {

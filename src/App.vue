@@ -3,11 +3,11 @@
 
 		<address-form></address-form>
 
-		<alert v-for="item in $store.state.alerts.active" :item="item" :key="item"></alert>
-
 		<select-questions v-if="$store.state.show_questions"></select-questions>
 
-		<router-view v-if="!$store.state.is_loading"></router-view>
+		<alert v-for="item in $store.state.alerts.active" :item="item" :key="item"></alert>
+
+		<router-view v-if="!$store.state.is_result_loading"></router-view>
 		<div v-else class="text-center">
 			<p class="h1">
 				<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
@@ -47,6 +47,7 @@ export default {
 	watch: {
 		'$route': function() {
 			this.checkIfAnswerable()
+			this.$store.commit('clearAlerts')
 		},
 		'$store.getters.askWatcher': function() {
 			// console.log('askWatcher')

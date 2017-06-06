@@ -4,13 +4,14 @@
 			<span aria-hidden="true">&times;</span>
 		</button>
 
-		<i class="fa fa-fw" :class="icon"></i>
+		<p>
+			<i class="fa fa-fw" :class="icon"></i>
+			<strong>{{ title }}</strong>
+		</p>
 
-		<strong>{{ item.title }}</strong> {{ item.text }}
+		<div v-html="text" class=""></div>
 
-		<footer v-if="item.footer_txt" class="small">
-			{{ item.footer_txt }}
-		</footer>
+		<!-- <footer v-if="item.footer_txt" class="small">{{ item.footer_txt }}</footer> -->
 	</div>
 </template>
 
@@ -19,8 +20,14 @@ export default {
 	name: 'alert',
 	props: ['item'],
 	computed: {
+		title () {
+			return (this.item && this.item.title) ? this.item.title : null
+		},
+		text () {
+			return (this.item && this.item.text) ? this.item.text : null
+		},
 		alert_class () {
-			return this.item.class || 'alert-info'
+			return (this.item && this.item.alert_class) ? this.item.alert_class : 'alert-warning'
 		},
 		icon () {
 			switch (this.alert_class) {
@@ -36,14 +43,11 @@ export default {
 				default:
 				return 'fa-info-circle'
 			}
-		},
-		item_index () {
-			return this.$store.state.alerts.indexOf(this.item)
 		}
 	},
 	methods: {
 		remove () {
-			this.$store.state.alerts.splice(this.item_index, 1)
+			this.$store.commit('removeAlert', this.item)
 		}
 	}
 }

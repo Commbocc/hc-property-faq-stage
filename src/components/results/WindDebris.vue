@@ -6,6 +6,8 @@
 			<span class="label label-info" v-text="response"></span>
 		</p>
 
+		<pre>{{ $store.state.answer }}</pre>
+
 		<!-- <esri-geo-map></esri-geo-map> -->
 
 	</div>
@@ -26,14 +28,15 @@ export default {
 	computed: {
 		isInAreA () {
 			if (this.$store.state.answer) {
-				var bool = this.$store.state.answer[this.$store.getters.theQuestion.attr_field]
+				var bool = this.$store.state.answer.attributes[this.$store.getters.theQuestion.attr_field]
 				return !bool
 			} else {
 				return false
 			}
 		},
 		response () {
-			return (this.isInAreA) ? 'You Are': 'You Are Not'
+			return this.$store.state.answer.attributes['tag']
+			// return (this.isInAreA) ? 'You Are': 'You Are Not'
 		}
 	}
 }

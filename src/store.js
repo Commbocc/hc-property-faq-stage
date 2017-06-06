@@ -29,7 +29,7 @@ export const store = new Vuex.Store({
 		//
 		inputAddress: '',
 		inputAddressPlaceholder: 'Your Address...',
-		is_loading: false,
+		is_result_loading: false,
 
 		// responses
 		addr_form_resp_addr: null,
@@ -56,12 +56,12 @@ export const store = new Vuex.Store({
 					}).then( response => {
 						if (response.length) {
 							commit('setAddress', response[0])
+							resolve()
 						} else {
-							throw 'The address could not be found.'
+							throw 'no-address'
 						}
-						resolve()
-					}).otherwise( (err) => {
-						console.error(err)
+					}).otherwise( err => {
+						commit('showAlert', err)
 						resolve()
 					})
 				});
@@ -83,14 +83,13 @@ export const store = new Vuex.Store({
 					queryTask.execute(query).then( response => {
 						if (response.features.length) {
 							commit('setParcel', response.features[0].attributes)
+							resolve()
 						} else {
-							// throw 'No Parcel information could be found.'
-							commit('setParcel', false)
+							throw 'no-parcel'
 						}
-						resolve()
-					}).otherwise( (err) => {
-						// console.error(err)
+					}).otherwise( err => {
 						commit('setParcel', false)
+						commit('showAlert', err)
 						resolve()
 					})
 				});
@@ -115,14 +114,13 @@ export const store = new Vuex.Store({
 
 							return queryTask.execute(query).then( response => {
 								if (response.features.length) {
-									commit('answerQuestion', response.features)
+									commit('answerQuestion', response.features[0])
 									resolve()
 								} else {
-									throw 'The information requested could not be found.'
+									commit('answerQuestion', false)
 								}
-							}).otherwise( (err) => {
-								// console.error(err)
-								commit('answerQuestion', false)
+							}).otherwise( err => {
+								commit('showAlert', err)
 								resolve()
 							})
 						})
@@ -144,7 +142,7 @@ export const store = new Vuex.Store({
 	},
 	mutations: {
 		setIsLoading (state, bool) {
-			state.is_loading = bool
+			state.is_result_loading = bool
 		},
 		setAddress (state, data) {
 			state.addr_form_resp_addr = data.address
@@ -155,7 +153,7 @@ export const store = new Vuex.Store({
 		},
 		answerQuestion (state, data) {
 			state.answer = data
-			state.is_loading = false
+			state.is_result_loading = false
 			router.push({ path: `/${state.selected_question}` })
 		},
 		setQuestion (state, data) {

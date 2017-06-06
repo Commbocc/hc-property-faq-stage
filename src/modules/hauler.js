@@ -64,13 +64,14 @@ export const hauler = {
 					queryTask.execute(query).then( (response) => {
 						if (response.features.length) {
 							commit('setHaulerData', response.features[0].attributes)
+							resolve()
 						} else {
-							throw 'No Hauler information could be found.'
+							throw 'no-sw-info'
 						}
-						resolve()
 					}).otherwise( (err) => {
-						console.error(err)
-						reject()
+						// console.error(err)
+						commit('showAlert', err)
+						resolve()
 					})
 
 				});
