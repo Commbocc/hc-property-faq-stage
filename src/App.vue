@@ -1,21 +1,66 @@
 <template>
 	<div id="app">
-		<router-view></router-view>
+
+		<address-form></address-form>
+
+		<alert v-for="item in $store.state.alerts.active" :item="item" :key="item"></alert>
+
+		<select-questions v-if="$store.state.show_questions"></select-questions>
+
+		<router-view v-if="!$store.state.is_loading"></router-view>
+		<div v-else class="text-center">
+			<p class="h1">
+				<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+			</p>
+		</div>
+
 	</div>
 </template>
 
 <script>
-import * as esriLoader from 'esri-loader'
+import AddressForm from '@/components/AddressForm'
+import SelectQuestions from '@/components/SelectQuestions'
+import Alert from '@/components/Alert'
 
 export default {
 	name: 'app',
-	beforeMount () {
-		if (!esriLoader.isLoaded()) {
-			esriLoader.bootstrap((err) => {
-				if (err) { console.error(err) }
-			}, {
-				url: 'https://js.arcgis.com/4.3'
-			})
+	components: {
+		'address-form': AddressForm,
+		'select-questions': SelectQuestions,
+		'alert': Alert,
+	},
+	data () {
+		return {}
+	},
+	methods: {
+		checkIfAnswerable () {
+			if (!this.$store.state.selected_question && !this.$store.state.addr_form_resp_location) {
+				this.$store.dispatch('updateQuestion', this.$route.path.substring(1)).then(()=>{
+					this.$router.replace({ path: '/' })
+				})
+				return false
+			} else {
+				return true
+			}
+		}
+	},
+	watch: {
+		'$route': function() {
+			this.checkIfAnswerable()
+		},
+		'$store.getters.askWatcher': function() {
+			// console.log('askWatcher')
+			if ( this.checkIfAnswerable() ) {
+				this.$store.dispatch('askQuestion')
+			}
+		}
+	},
+	mounted () {
+		this.checkIfAnswerable()
+		//
+		if (window.selected_question) {
+			this.$store.state.show_questions = false
+			this.$store.state.selected_question = window.selected_question
 		}
 	}
 }
