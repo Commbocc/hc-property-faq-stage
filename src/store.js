@@ -16,19 +16,21 @@ if (!esriLoader.isLoaded()) {
 
 import { questions } from '@/modules/questions'
 import { alerts } from '@/modules/alerts'
-
 import { hauler } from '@/modules/hauler'
+import { evacuation_zones } from '@/modules/evacuation'
 
 export const store = new Vuex.Store({
 	modules: {
 		questions,
 		alerts,
-		hauler
+		hauler,
+		evacuation_zones
 	},
 	state: {
 		//
 		inputAddress: '',
 		inputAddressPlaceholder: 'Your Address...',
+		is_address_loading: false,
 		is_result_loading: false,
 
 		// responses
@@ -44,6 +46,7 @@ export const store = new Vuex.Store({
 	actions: {
 		findAddress ({commit, state}) {
 			return new Promise((resolve, reject) => {
+				commit('setIsAddressLoading', true)
 				esriLoader.dojoRequire([
 					"esri/tasks/Locator"
 				], (Locator) => {
@@ -98,7 +101,7 @@ export const store = new Vuex.Store({
 		askQuestion ({commit, state, getters}) {
 			if (state.selected_question && state.addr_form_resp_location) {
 				return new Promise((resolve, reject) => {
-					commit('setIsLoading', true)
+					commit('setIsResultsLoading', true)
 					if (getters.theQuestion.within) {
 						esriLoader.dojoRequire([
 							"esri/tasks/QueryTask",
@@ -141,12 +144,16 @@ export const store = new Vuex.Store({
 		}
 	},
 	mutations: {
-		setIsLoading (state, bool) {
+		setIsAddressLoading (state, bool) {
+			state.is_address_loading = bool
+		},
+		setIsResultsLoading (state, bool) {
 			state.is_result_loading = bool
 		},
 		setAddress (state, data) {
 			state.addr_form_resp_addr = data.address
 			state.addr_form_resp_location = data.location
+			state.is_address_loading = false
 		},
 		setParcel (state, data) {
 			state.addr_form_resp_parcel = data

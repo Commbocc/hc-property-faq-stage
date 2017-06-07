@@ -1,8 +1,29 @@
 <template>
 	<div class="evacuation">
-		<h1>{{ title }}</h1>
 
-		<pre>{{ $store.state.answer }}</pre>
+		<p class="h2 text-center">
+			{{ commissioner.name }}
+			
+			<small>
+				({{ commissioner.party }})
+
+				<br>
+
+				District:
+				{{ commissioner.district }}
+			</small>
+		</p>
+
+		<ul class="list-inline text-center">
+			<li>
+				{{ commissioner.phone }}
+			</li>
+			<li>
+				<a :href="commissioner.website" target="_blank">Website</a>
+			</li>
+		</ul>
+
+		<!-- <pre>{{ $store.state.answer }}</pre> -->
 
 		<!-- <esri-geo-map></esri-geo-map> -->
 
@@ -13,21 +34,21 @@
 // import EsriGeoMap from '@/components/esri/GeoMap'
 export default {
 	name: 'commissioner-results',
-	data () {
-		return {
-			title: 'Commissioner'
-		}
-	},
 	components: {
 		// 'esri-geo-map': EsriGeoMap
 	},
 	computed: {
-		// isInArea () {
-		// 	if (this.$store.getters.theQuestion) {
-		// 		var bool = this.$store.state.answer.attributes[this.$store.getters.theQuestion.attr_field]
-		// 		return !bool
-		// 	}
-		// }
+		commissioner () {
+			if (this.$store.state.answer) {
+				return {
+					name: this.$store.state.answer.attributes.NAME,
+					party: this.$store.state.answer.attributes.PARTY,
+					district: this.$store.state.answer.attributes.DISTRICT,
+					phone: this.$store.state.answer.attributes.PHONE,
+					website: this.$store.state.answer.attributes.WEBSITE,
+				}
+			}
+		}
 	}
 }
 </script>

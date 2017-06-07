@@ -14,6 +14,8 @@
 			</p>
 		</div>
 
+		<hr class="visible-xs-block">
+
 	</div>
 </template>
 

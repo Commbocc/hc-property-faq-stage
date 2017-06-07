@@ -6,14 +6,20 @@
 				<div class="input-group">
 					<input class="form-control" v-model="$store.state.inputAddress" :placeholder="$store.state.inputAddressPlaceholder" autocomplete="off" required>
 					<span class="input-group-btn">
-						<button class="btn btn-info" type="submit">
-							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+
+						<button class="btn" :class="btn_class" type="submit">
+							<i v-if="$store.state.is_address_loading" class="fa fa-spinner fa-spin fa-fw"></i>
+							<i v-else class="fa fa-fw fa-search"></i>
 							Find
 						</button>
+
 					</span>
 				</div>
-				<div v-if="$store.state.addr_form_resp_addr" class="help-block label label-success">
-					{{ $store.state.addr_form_resp_addr }}
+				<div v-if="$store.state.addr_form_resp_addr" class="help-block text-center small">
+					Found:
+					<strong>
+						{{ $store.state.addr_form_resp_addr }}
+					</strong>
 				</div>
 			</div>
 		</form>
@@ -27,6 +33,11 @@ export default {
 	methods: {
 		search () {
 			this.$store.dispatch('findAddress')
+		}
+	},
+	computed: {
+		btn_class () {
+			return (this.$store.state.is_address_loading) ? 'btn-warning disabled' : 'btn-info'
 		}
 	}
 }

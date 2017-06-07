@@ -9,7 +9,7 @@
 			<strong>{{ title }}</strong>
 		</p>
 
-		<div v-html="text" class=""></div>
+		<div v-html="text"></div>
 
 		<!-- <footer v-if="item.footer_txt" class="small">{{ item.footer_txt }}</footer> -->
 	</div>
