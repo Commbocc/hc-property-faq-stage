@@ -44,6 +44,21 @@ export const store = new Vuex.Store({
 		answer: null
 	},
 	actions: {
+		// sendUsageData ({state}) {
+		// 	var body = {
+		// 		'_submit': '1',
+		// 		form: '2719344',
+		// 		viewkey: 'J7qwJEECVj',
+		// 		viewparam: '685268',
+		// 		'field53337621': JSON.stringify(state)
+		// 	}
+		//
+		// 	Vue.http.post('https://www.formstack.com/forms/index.php', body).then( response => {
+		// 		console.log(response)
+		// 	}, err => {
+		// 		console.error(err)
+		// 	})
+		// },
 		findAddress ({commit, state}) {
 			return new Promise((resolve, reject) => {
 				commit('setIsAddressLoading', true)
