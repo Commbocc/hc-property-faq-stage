@@ -65,6 +65,7 @@ export const store = new Vuex.Store({
 						}
 					}).otherwise( err => {
 						commit('showAlert', err)
+						commit('setIsAddressLoading', false)
 						resolve()
 					})
 				});
