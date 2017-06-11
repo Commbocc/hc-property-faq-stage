@@ -3,7 +3,7 @@
 
 		<form @submit.prevent="search()">
 			<div class="form-group">
-				<div class="input-group">
+				<div class="input-group input-group-lg">
 					<input class="form-control" v-model="$store.state.inputAddress" :placeholder="$store.state.inputAddressPlaceholder" autocomplete="off" required>
 					<span class="input-group-btn">
 

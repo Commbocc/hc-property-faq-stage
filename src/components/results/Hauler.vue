@@ -1,7 +1,7 @@
 <template>
 	<div id="hauler">
 
-		<section v-if="$store.state.hauler.garbageDays" class="panel panel-default">
+		<section v-if="$store.state.hauler.show_hauler_data" class="panel panel-default">
 			<header class="panel-heading">
 				<strong>Address:</strong>
 				{{ $store.state.hauler.hauler_data.Address }}

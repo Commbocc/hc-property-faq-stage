@@ -13,6 +13,8 @@ export const hauler = {
 			YardWaste: null,
 		},
 
+		show_hauler_data: false,
+
 		garbageDays: null,
 		nextGarbageDays: [],
 		recycleDays: null,
@@ -64,12 +66,14 @@ export const hauler = {
 					queryTask.execute(query).then( (response) => {
 						if (response.features.length) {
 							commit('setHaulerData', response.features[0].attributes)
+							commit('showHaulerData', true)
 							resolve()
 						} else {
 							throw 'no-sw-info'
 						}
 					}).otherwise( (err) => {
 						// console.error(err)
+						commit('showHaulerData', false)
 						commit('showAlert', err)
 						resolve()
 					})
@@ -88,6 +92,9 @@ export const hauler = {
 			state.nextRecycleDays = nextPickupDays(state.hauler_data.Recycling, true)
 			state.yardWasteDays = getDaysOfWeek(state.hauler_data.YardWaste)
 			state.nextYardWasteDays = nextPickupDays(state.hauler_data.YardWaste)
+		},
+		showHaulerData (state, bool) {
+			state.show_hauler_data = bool
 		}
 	},
 	getters: {

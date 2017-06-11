@@ -61,6 +61,7 @@ export const store = new Vuex.Store({
 		// },
 		findAddress ({commit, state}) {
 			return new Promise((resolve, reject) => {
+				commit('clearAlerts')
 				commit('setIsAddressLoading', true)
 				esriLoader.dojoRequire([
 					"esri/tasks/Locator"
