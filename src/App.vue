@@ -14,7 +14,7 @@
 			</p>
 		</div>
 
-		<hr class="visible-xs-block">
+		<!-- <hr class="visible-xs-block"> -->
 
 	</div>
 </template>
@@ -38,7 +38,7 @@ export default {
 		checkIfAnswerable () {
 			if (!this.$store.state.selected_question && !this.$store.state.addr_form_resp_location) {
 				this.$store.dispatch('updateQuestion', this.$route.path.substring(1)).then(()=>{
-					this.$router.replace({ path: '/' })
+					this.$router.replace({ path: '/', query: this.$route.query })
 				})
 				return false
 			} else {
@@ -60,10 +60,15 @@ export default {
 	},
 	mounted () {
 		this.checkIfAnswerable()
+
 		//
 		if (window.selected_question) {
 			this.$store.state.show_questions = false
 			this.$store.state.selected_question = window.selected_question
+		} else if (parseInt(this.$route.query.qs) === 0) {
+			this.$store.state.show_questions = false
+		} else {
+			this.$store.state.show_questions = true
 		}
 	}
 }

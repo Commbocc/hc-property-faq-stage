@@ -92,11 +92,13 @@ export default {
 					if (this.$store.state.addr_form_resp_parcel) {
 						this.$store.dispatch('fetchHaulerInfo', this.$store.state.addr_form_resp_parcel.FOLIO)
 					} else {
-						this.$router.replace({ path: '/' })
+						this.$store.commit('setQuestion', 'hauler')
+						this.$router.replace({ path: '/', query: this.$route.query })
 					}
 				})
 			} else {
-				this.$router.replace({ path: '/' })
+				this.$store.commit('setQuestion', 'hauler')
+				this.$router.replace({ path: '/', query: this.$route.query })
 			}
 		}
 	},
