@@ -1,24 +1,15 @@
 <template lang="html">
-	<div v-if="feedback_form_shown" class="">
-		<br>
-
-		<i class="fa fa-fw" :class="alert.feedback.icon" aria-hidden="true"></i>
-		<strong>
-			{{ alert.feedback.title }}
-		</strong>
-		<div v-html="alert.feedback.body"></div>
-
-		<form method="post" action="https://www.formstack.com/forms/index.php" target="_blank">
-			<input type="hidden" name="form" :value="formstack.form" />
-			<input type="hidden" name="viewkey" :value="formstack.viewkey" />
-			<input type="hidden" :name="formstack._app" :value="current_page" />
-			<input type="hidden" :name="formstack._field" :value="JSON.stringify(field_value, null, '\t')" />
-			<button type="submit" class="btn btn-sm btn-info">
-				{{ alert.feedback.btn_text }}
-				<i class="fa fa-fw fa-1x" :class="alert.feedback.icon" aria-hidden="true"></i>
-			</button>
-		</form>
-	</div>
+	<form v-if="feedback_form_shown" method="post" action="https://www.formstack.com/forms/index.php" target="_blank">
+		<input type="hidden" name="form" :value="formstack.form" />
+		<input type="hidden" name="viewkey" :value="formstack.viewkey" />
+		<input type="hidden" :name="formstack._address" :value="$store.state.addr_form_resp_addr" />
+		<input type="hidden" :name="formstack._url" :value="current_page" />
+		<input type="hidden" :name="formstack._field" :value="JSON.stringify(field_value, null, '\t')" />
+		<button type="submit" class="btn btn-sm btn-info">
+			{{ alert.feedback.btn_text }}
+			<i class="fa fa-fw fa-1x" :class="alert.feedback.icon" aria-hidden="true"></i>
+		</button>
+	</form>
 </template>
 
 <script>
@@ -34,7 +25,8 @@ export default {
 			formstack: {
 				form: '2719344',
 				viewkey: 'J7qwJEECVj',
-				_app: 'application',
+				_address: 'address',
+				_url: 'url',
 				_field: 'application_state',
 			}
 		}
