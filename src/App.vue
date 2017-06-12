@@ -77,5 +77,6 @@ export default {
 <style media="screen">
 	body {
 		background: #fff;
+		margin-top: 10px;
 	}
 </style>
