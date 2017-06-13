@@ -7,11 +7,7 @@ import router from './router'
 // init esri
 import * as esriLoader from 'esri-loader'
 if (!esriLoader.isLoaded()) {
-	esriLoader.bootstrap((err) => {
-		if (err) { console.error(err) }
-	}, {
-		url: 'https://js.arcgis.com/4.3'
-	})
+	console.error('Esri didn\'t load')
 }
 
 import { questions } from '@/modules/questions'
