@@ -22,7 +22,7 @@ export const store = new Vuex.Store({
 	state: {
 		//
 		inputAddress: '',
-		inputAddressPlaceholder: 'Your Address...',
+		inputAddressPlaceholder: 'Your Street Address...',
 		is_address_loading: false,
 		is_result_loading: false,
 
