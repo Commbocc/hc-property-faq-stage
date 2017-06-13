@@ -1,3 +1,5 @@
+var find = require('array.prototype.find')
+
 export const alerts = {
 	state: {
 		active: [],
@@ -46,7 +48,8 @@ export const alerts = {
 	},
 	mutations: {
 		showAlert (state, id) {
-			state.active.unshift( state.index.find(alert => alert.id === id) )
+			var alert = find(state.index, alert => alert.id === id)
+			state.active.unshift( alert )
 		},
 		removeAlert (state, alert) {
 			state.active.splice( state.active.indexOf(alert), 1 )

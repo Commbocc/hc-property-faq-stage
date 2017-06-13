@@ -75,8 +75,7 @@ export default {
 </script>
 
 <style media="screen">
-	body {
-		background: #fff;
+	#app {
 		margin-top: 10px;
 	}
 </style>

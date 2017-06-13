@@ -43,5 +43,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scope>
+.btn {
+	white-space: nowrap;
+}
 </style>
