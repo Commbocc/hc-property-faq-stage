@@ -2,15 +2,10 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
 
-var find = require('array.prototype.find')
-
 import router from './router'
 
 // init esri
 import * as esriLoader from 'esri-loader'
-if (!esriLoader.isLoaded()) {
-	console.error('Esri didn\'t load')
-}
 
 import { questions } from '@/modules/questions'
 import { alerts } from '@/modules/alerts'
@@ -176,7 +171,7 @@ export const store = new Vuex.Store({
 			]
 		},
 		findQuestion: (state) => (question) => {
-			return find(state.questions.index, q => q.value === question)
+			return state.questions.index.find(q => q.value === question)
 		},
 		theQuestion (state, getters) {
 			return getters.findQuestion(state.selected_question)

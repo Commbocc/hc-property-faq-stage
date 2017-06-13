@@ -1,5 +1,3 @@
-var find = require('array.prototype.find')
-
 export const alerts = {
 	state: {
 		active: [],
@@ -15,11 +13,6 @@ export const alerts = {
 			// 	title: 'Timeout',
 			// 	text: 'It\'s taking longer than expected.',
 			// 	alert_class: 'alert-danger'
-			// },
-			// {
-			// 	id: 'esri-ie',
-			// 	title: 'Browser Error',
-			// 	text: 'Stop using internet explorer.'
 			// },
 
 			// geoservice
@@ -48,8 +41,7 @@ export const alerts = {
 	},
 	mutations: {
 		showAlert (state, id) {
-			var alert = find(state.index, alert => alert.id === id)
-			state.active.unshift( alert )
+			state.active.unshift( state.index.find(alert => alert.id === id) )
 		},
 		removeAlert (state, alert) {
 			state.active.splice( state.active.indexOf(alert), 1 )

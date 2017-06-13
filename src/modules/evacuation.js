@@ -1,5 +1,3 @@
-var find = require('array.prototype.find')
-
 export const evacuation_zones = {
 	state: {
 		index: [
@@ -37,7 +35,7 @@ export const evacuation_zones = {
 	},
 	getters: {
 		evacZoneById: (state) => (id) => {
-			return find(state.index, z => z.id === id)
+			return state.index.find(z => z.id === id)
 		}
 	}
 }
