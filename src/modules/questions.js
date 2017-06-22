@@ -4,8 +4,8 @@ export const questions = {
 			{
 				value: 'hauler',
 				text: 'What are my trash pickup days?',
-				// endpoint: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/InfoLayers/SW_HAULER_DATA2/MapServer/1',
-				// attr_field: 'Folio',
+				// endpoint: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/SolidWaste_Viewer/SolidWasteCustomerData/MapServer/1',
+				// attr_field: 'FolioNo',
 				within: false
 			},
 			{

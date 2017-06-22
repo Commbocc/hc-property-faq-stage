@@ -1,10 +1,12 @@
 <template>
 	<div id="hauler">
 
+		<!-- <pre class="small">{{ $store.state.hauler }}</pre> -->
+
 		<section v-if="$store.state.hauler.show_hauler_data" class="panel panel-default">
 			<header class="panel-heading">
 				<strong>Address:</strong>
-				{{ $store.state.hauler.hauler_data.Address }}
+				{{ $store.state.hauler.hauler_data.Property_Address }}
 			</header>
 			<div class="table-responsive">
 				<table class="table table-striped table-bordered">

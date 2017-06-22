@@ -4,13 +4,14 @@ import _ from 'underscore'
 
 export const hauler = {
 	state: {
-		endpoint: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/InfoLayers/SW_HAULER_DATA2/MapServer/1',
+		endpoint: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/SolidWaste_Viewer/SolidWasteCustomerData/MapServer/1',
 
 		hauler_data: {
-			Provider: null,
-			Garbage: null,
-			Recycling: null,
-			YardWaste: null,
+			Service__Area: null,
+			Gar__Ser__Days: null,
+			Rec__Ser__Days: null,
+			YW_Ser__Days: null,
+			Property_Address: null
 		},
 
 		show_hauler_data: false,
@@ -60,7 +61,7 @@ export const hauler = {
 						url: state.endpoint
 					})
 					var query = new Query()
-					query.where = 'Folio=' + folio
+					query.where = 'FolioNo=' + folio
 					query.outFields = ['*']
 
 					queryTask.execute(query).then( (response) => {
@@ -86,12 +87,12 @@ export const hauler = {
 		setHaulerData (state, data) {
 			state.hauler_data = data
 			//
-			state.garbageDays = getDaysOfWeek(state.hauler_data.Garbage)
-			state.nextGarbageDays = nextPickupDays(state.hauler_data.Garbage)
-			state.recycleDays = getDaysOfWeek(state.hauler_data.Recycling)
-			state.nextRecycleDays = nextPickupDays(state.hauler_data.Recycling, true)
-			state.yardWasteDays = getDaysOfWeek(state.hauler_data.YardWaste)
-			state.nextYardWasteDays = nextPickupDays(state.hauler_data.YardWaste)
+			state.garbageDays = getDaysOfWeek(state.hauler_data.Gar__Ser__Days)
+			state.nextGarbageDays = nextPickupDays(state.hauler_data.Gar__Ser__Days)
+			state.recycleDays = getDaysOfWeek(state.hauler_data.Rec__Ser__Days)
+			state.nextRecycleDays = nextPickupDays(state.hauler_data.Rec__Ser__Days, true)
+			state.yardWasteDays = getDaysOfWeek(state.hauler_data.YW_Ser__Days)
+			state.nextYardWasteDays = nextPickupDays(state.hauler_data.YW_Ser__Days)
 		},
 		showHaulerData (state, bool) {
 			state.show_hauler_data = bool
@@ -100,7 +101,7 @@ export const hauler = {
 	getters: {
 		provider (state) {
 			return _.chain(state.index).filter( (p) => {
-				return _.contains(p.ids, state.hauler_data.Provider)
+				return _.contains(p.ids, state.hauler_data.Service__Area)
 			}).first().value()
 		}
 	}
