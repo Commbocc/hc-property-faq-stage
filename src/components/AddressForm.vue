@@ -15,12 +15,6 @@
 
 					</span>
 				</div>
-				<div v-if="$store.state.addr_form_resp_addr" class="help-block text-center small">
-					Found:
-					<strong>
-						{{ $store.state.addr_form_resp_addr }}
-					</strong>
-				</div>
 			</div>
 		</form>
 
