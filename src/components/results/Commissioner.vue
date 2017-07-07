@@ -23,19 +23,20 @@
 			</li>
 		</ul>
 
-		<!-- <pre>{{ $store.state.answer }}</pre> -->
+		<esri-web-map portalId="3df5b4b240e54308843253e13ed8f0f0"></esri-web-map>
 
-		<!-- <esri-geo-map></esri-geo-map> -->
+		<!-- <pre>{{ $store.state.answer }}</pre> -->
 
 	</div>
 </template>
 
 <script>
-// import EsriGeoMap from '@/components/esri/GeoMap'
+import EsriWebMap from '@/components/esri/WebMap'
+
 export default {
 	name: 'commissioner-results',
 	components: {
-		// 'esri-geo-map': EsriGeoMap
+		'esri-web-map': EsriWebMap
 	},
 	computed: {
 		commissioner () {

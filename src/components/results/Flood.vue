@@ -11,8 +11,7 @@
 			</em>
 		</p>
 
-
-		<!-- <esri-geo-map></esri-geo-map> -->
+		<esri-web-map portalId="aa4ea5c805c54f378d228fe8439f0819"></esri-web-map>
 
 		<blockquote cite="https://www.fema.gov/media-library-data/20130726-1535-20490-7429/appxd.pdf" class="small">
 			<p>
@@ -56,11 +55,12 @@
 </template>
 
 <script>
-// import EsriGeoMap from '@/components/esri/GeoMap'
+import EsriWebMap from '@/components/esri/WebMap'
+
 export default {
 	name: 'flood-results',
 	components: {
-		// 'esri-geo-map': EsriGeoMap
+		'esri-web-map': EsriWebMap
 	},
 	computed: {
 		zone () {
