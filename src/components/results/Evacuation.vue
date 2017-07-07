@@ -16,7 +16,7 @@
 			You are not in an Evacuation Zone.
 		</p>
 
-		<!-- <esri-geo-map></esri-geo-map> -->
+		<esri-web-map portalId="3e0206ad5efb4af2ae7ed2f44069d7eb"></esri-web-map>
 
 		<details open>
 			<ul>
@@ -32,11 +32,12 @@
 </template>
 
 <script>
-// import EsriGeoMap from '@/components/esri/GeoMap'
+import EsriWebMap from '@/components/esri/WebMap'
+
 export default {
 	name: 'evacuation-results',
 	components: {
-		// 'esri-geo-map': EsriGeoMap
+		'esri-web-map': EsriWebMap
 	},
 	computed: {
 		zone () {
