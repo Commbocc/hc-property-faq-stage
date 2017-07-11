@@ -1,5 +1,5 @@
 <template>
-	<div class="evacuation">
+	<div class="flood-zone">
 		<p class="h2 text-center">
 
 			Zone: {{ zone }}
