@@ -1,33 +1,35 @@
 <template>
-	<div class="evacuation">
+	<section class="commissioner">
 
-		<p class="h2 text-center">
-			{{ commissioner.name }}
-			
-			<small>
-				({{ commissioner.party }})
+		<div class="alert alert-info">
+			<p class="h2 text-center">
+				{{ commissioner.name }}
 
-				<br>
+				<small>
+					({{ commissioner.party }})
 
-				District:
-				{{ commissioner.district }}
-			</small>
-		</p>
+					<br>
 
-		<ul class="list-inline text-center">
-			<li>
-				{{ commissioner.phone }}
-			</li>
-			<li>
-				<a :href="commissioner.website" target="_blank">Website</a>
-			</li>
-		</ul>
+					District:
+					{{ commissioner.district }}
+				</small>
+			</p>
+
+			<ul class="list-inline text-center">
+				<li>
+					{{ commissioner.phone }}
+				</li>
+				<li>
+					<a :href="commissioner.website" target="_blank">Website</a>
+				</li>
+			</ul>
+		</div>
 
 		<esri-web-map portalId="3df5b4b240e54308843253e13ed8f0f0"></esri-web-map>
 
 		<!-- <pre>{{ $store.state.answer }}</pre> -->
 
-	</div>
+	</section>
 </template>
 
 <script>
@@ -53,3 +55,9 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+.h2 {
+	margin-top: 0;
+}
+</style>
