@@ -57,6 +57,6 @@ export default {
 <style scoped>
 .h2 {
 	margin-top: 0;
-	font-size: 30px;
+	font-size: 30px !important;
 }
 </style>
