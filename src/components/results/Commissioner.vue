@@ -1,5 +1,5 @@
 <template>
-	<section class="commissioner">
+	<section v-if="$store.state.answer" class="commissioner">
 
 		<div class="alert alert-info">
 			<p class="h2 text-center">
@@ -26,8 +26,6 @@
 		</div>
 
 		<esri-web-map portalId="3df5b4b240e54308843253e13ed8f0f0"></esri-web-map>
-
-		<!-- <pre>{{ $store.state.answer }}</pre> -->
 
 	</section>
 </template>
@@ -59,5 +57,6 @@ export default {
 <style scoped>
 .h2 {
 	margin-top: 0;
+	font-size: 30px;
 }
 </style>
