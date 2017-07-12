@@ -1,41 +1,42 @@
 <template>
-	<div class="evacuation">
+	<section v-if="$store.state.answer" class="commissioner">
 
-		<p class="h2 text-center">
-			{{ commissioner.name }}
-			
-			<small>
-				({{ commissioner.party }})
+		<div class="alert alert-info">
+			<p class="h2 text-center">
+				{{ commissioner.name }}
 
-				<br>
+				<small>
+					({{ commissioner.party }})
 
-				District:
-				{{ commissioner.district }}
-			</small>
-		</p>
+					<br>
 
-		<ul class="list-inline text-center">
-			<li>
-				{{ commissioner.phone }}
-			</li>
-			<li>
-				<a :href="commissioner.website" target="_blank">Website</a>
-			</li>
-		</ul>
+					District:
+					{{ commissioner.district }}
+				</small>
+			</p>
 
-		<!-- <pre>{{ $store.state.answer }}</pre> -->
+			<ul class="list-inline text-center">
+				<li>
+					{{ commissioner.phone }}
+				</li>
+				<li>
+					<a :href="commissioner.website" target="_blank">Website</a>
+				</li>
+			</ul>
+		</div>
 
-		<!-- <esri-geo-map></esri-geo-map> -->
+		<esri-web-map portalId="3df5b4b240e54308843253e13ed8f0f0"></esri-web-map>
 
-	</div>
+	</section>
 </template>
 
 <script>
-// import EsriGeoMap from '@/components/esri/GeoMap'
+import EsriWebMap from '@/components/esri/WebMap'
+
 export default {
 	name: 'commissioner-results',
 	components: {
-		// 'esri-geo-map': EsriGeoMap
+		'esri-web-map': EsriWebMap
 	},
 	computed: {
 		commissioner () {
@@ -52,3 +53,10 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+.h2 {
+	margin-top: 0;
+	font-size: 30px !important;
+}
+</style>
