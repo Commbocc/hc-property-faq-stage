@@ -45,7 +45,8 @@ export const store = new Vuex.Store({
 					"esri/tasks/Locator"
 				], (Locator) => {
 					var hcLocator = new Locator({
-						url: "https://maps.hillsboroughcounty.org/arcgis/rest/services/Geocoding/DBO_composite_address_locator/GeocodeServer"
+						url: "https://maps.hillsboroughcounty.org/arcgis/rest/services/Geocoding/DBO_composite_address_locator/GeocodeServer",
+						outSpatialReference: {wkid: 102100}
 					})
 					hcLocator.addressToLocations({
 						address: { SingleLine: state.inputAddress },
