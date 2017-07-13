@@ -21,7 +21,8 @@ export default {
 			'esri/WebMap',
 			'esri/views/MapView',
 			'esri/widgets/Home',
-		], (WebMap, MapView, Home) => {
+			'esri/geometry/Point'
+		], (WebMap, MapView, Home, Point) => {
 
 			this.webmap = new WebMap({
 				portalItem: {
@@ -36,10 +37,19 @@ export default {
 
 			var homeWidget = new Home({
 				view: this.mapview
-			});
+			})
 
 			// adds the home widget to the top left corner of the MapView
 			this.mapview.ui.add(homeWidget, "top-left")
+
+			// zoom to address
+			this.mapview.then( mv => {
+				var target = new Point(this.$store.state.addr_form_resp_location)
+				mv.goTo({
+					target,
+					zoom: 15
+				})
+			})
 
 		});
 	}
