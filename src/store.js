@@ -30,6 +30,7 @@ export const store = new Vuex.Store({
 		addr_form_resp_addr: null,
 		addr_form_resp_location: null,
 		addr_form_resp_parcel: null,
+		addr_form_resp_parcel_location: null,
 
 		//
 		selected_question: false,
@@ -37,7 +38,7 @@ export const store = new Vuex.Store({
 		answer: null
 	},
 	actions: {
-		findAddress ({commit, state}) {
+		findAddress ({dispatch, commit, state}) {
 			return new Promise((resolve, reject) => {
 				commit('clearAlerts')
 				commit('setIsAddressLoading', true)
@@ -45,7 +46,8 @@ export const store = new Vuex.Store({
 					"esri/tasks/Locator"
 				], (Locator) => {
 					var hcLocator = new Locator({
-						url: "https://maps.hillsboroughcounty.org/arcgis/rest/services/Geocoding/DBO_composite_address_locator/GeocodeServer"
+						url: "https://maps.hillsboroughcounty.org/arcgis/rest/services/Geocoding/DBO_composite_address_locator/GeocodeServer",
+						outSpatialReference: {wkid: 102100}
 					})
 					hcLocator.addressToLocations({
 						address: { SingleLine: state.inputAddress },
@@ -53,6 +55,7 @@ export const store = new Vuex.Store({
 					}).then( response => {
 						if (response.length) {
 							commit('setAddress', response[0])
+							dispatch('fetchParcel')
 							resolve()
 						} else {
 							throw 'no-address'
@@ -77,10 +80,11 @@ export const store = new Vuex.Store({
 					var query = new Query()
 					query.geometry = state.addr_form_resp_location
 					query.outFields = ['FOLIO']
+					query.returnGeometry = true
 
 					queryTask.execute(query).then( response => {
 						if (response.features.length) {
-							commit('setParcel', response.features[0].attributes)
+							commit('setParcel', response.features[0])
 							resolve()
 						} else {
 							throw 'no-parcel'
@@ -151,7 +155,8 @@ export const store = new Vuex.Store({
 			state.is_address_loading = false
 		},
 		setParcel (state, data) {
-			state.addr_form_resp_parcel = data
+			state.addr_form_resp_parcel = data.attributes
+			state.addr_form_resp_parcel_location = data.geometry
 		},
 		answerQuestion (state, data) {
 			state.answer = data

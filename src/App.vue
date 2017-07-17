@@ -1,6 +1,8 @@
 <template>
 	<div id="app">
 
+		<!-- <details><pre>{{ $store.state }}</pre></details> -->
+
 		<address-form></address-form>
 
 		<select-questions v-if="$store.state.show_questions"></select-questions>
