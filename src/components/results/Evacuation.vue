@@ -1,5 +1,5 @@
 <template>
-	<div class="evacuation">
+	<section v-if="$store.state.answer">
 
 		<p v-if="zone" class="h2 text-center">
 			Zone: {{ zone.letter }}
@@ -28,7 +28,7 @@
 			</ul>
 		</details>
 
-	</div>
+	</section>
 </template>
 
 <script>

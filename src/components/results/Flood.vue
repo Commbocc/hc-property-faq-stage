@@ -1,5 +1,5 @@
 <template>
-	<div class="flood-zone">
+	<section v-if="$store.state.answer" class="flood-zone">
 		<p class="h2 text-center">
 
 			Zone: {{ zone }}
@@ -19,7 +19,7 @@
 			</p>
 		</div>
 
-	</div>
+	</section>
 </template>
 
 <script>
