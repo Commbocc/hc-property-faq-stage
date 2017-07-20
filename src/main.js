@@ -10,11 +10,16 @@ Vue.use(VueResource)
 
 Vue.config.productionTip = false
 
+var appElem = document.getElementById('app')
+
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  store,
-  template: '<App/>',
-  components: { App }
+	el: '#app',
+	router,
+	store,
+	template: '<App/>',
+	components: { App },
+	beforeMount () {
+		store.state.selected_question = appElem.getAttribute('data-selected-question') || window.selected_question || false
+	}
 })
