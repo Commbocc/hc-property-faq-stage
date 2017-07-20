@@ -33,9 +33,6 @@ export default {
 		'select-questions': SelectQuestions,
 		'alert': Alert,
 	},
-	data () {
-		return {}
-	},
 	methods: {
 		checkIfAnswerable () {
 			if (!this.$store.state.selected_question && !this.$store.state.addr_form_resp_location) {
@@ -64,9 +61,8 @@ export default {
 		this.checkIfAnswerable()
 
 		//
-		if (window.selected_question) {
+		if (this.$store.state.selected_question) {
 			this.$store.state.show_questions = false
-			this.$store.state.selected_question = window.selected_question
 		} else if (parseInt(this.$route.query.qs) === 0) {
 			this.$store.state.show_questions = false
 		} else {
