@@ -1,5 +1,5 @@
 <template>
-	<div class="panel panel-default">
+	<section v-if="$store.state.answer" class="panel panel-default">
 		<div class="panel-body">
 
 			<div class="row">
@@ -20,7 +20,7 @@
 			</div>
 
 		</div>
-	</div>
+	</section>
 </template>
 
 <script>
