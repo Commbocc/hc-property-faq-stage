@@ -2,17 +2,17 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
 
-import router from './router'
+import router from '../router'
 
 // init esri
 import * as esriLoader from 'esri-loader'
 
-import { questions } from '@/modules/questions'
-import { alerts } from '@/modules/alerts'
-import { hauler } from '@/modules/hauler'
-import { evacuation_zones } from '@/modules/evacuation'
+import { questions } from './questions'
+import { alerts } from './alerts'
+import { hauler } from './hauler'
+import { evacuation_zones } from './evacuation'
 
-export const store = new Vuex.Store({
+export default new Vuex.Store({
 	modules: {
 		questions,
 		alerts,
