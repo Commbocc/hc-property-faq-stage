@@ -3,7 +3,7 @@
 
 		<router-view></router-view>
 
-		<section class="panel panel-info">
+		<section v-if="!singleQuestion" class="panel panel-info">
 			<header class="panel-heading">
 				<h4 class="panel-title">
 					{{ panelTitle }} {{ folio }}
@@ -42,7 +42,8 @@ export default {
 		}
 	},
 	computed: mapState({
-		questions: state => state.questions.index
+		questions: state => state.questions.index,
+		singleQuestion: state => state.questions.selected
 	}),
 	methods: {
 		jump (e) {

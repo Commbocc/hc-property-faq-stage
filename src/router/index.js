@@ -19,9 +19,7 @@ export default new Router({
 		path: '/search',
 		name: 'Search',
 		beforeEnter (to, from, next) {
-			store.dispatch('determineRoute').then(routeResult => {
-				next(routeResult)
-			})
+			store.dispatch('determineRoute').then(routeResult => next(routeResult))
 		}
 	},
 	{
@@ -31,7 +29,15 @@ export default new Router({
 		props: true,
 		beforeEnter (to, from, next) {
 			store.dispatch('ensureParcelLoaded', to.params.folio).then(hasParcel => {
-				(hasParcel) ? next() : next({name: 'Home'})
+				if (hasParcel) {
+					if (store.state.questions.selected && to.name === 'Questions') {
+						store.dispatch('determineRoute').then(routeResult => next(routeResult))
+					} else {
+						next()
+					}
+				} else {
+					next({name: 'Home'})
+				}
 			})
 		},
 		children: [
