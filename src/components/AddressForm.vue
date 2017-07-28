@@ -53,3 +53,9 @@ export default {
 	}
 }
 </script>
+
+<style scope>
+.btn {
+	white-space: nowrap;
+}
+</style>
