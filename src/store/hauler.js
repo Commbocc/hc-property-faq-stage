@@ -1,113 +1,103 @@
-// init esri
 import * as esriLoader from 'esri-loader'
 import _ from 'underscore'
 
-export const hauler = {
+export default {
 	state: {
-		endpoint: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/SolidWaste_Viewer/SolidWasteCustomerData/MapServer/1',
-
-		hauler_data: {
-			Service__Area: null,
-			Gar__Ser__Days: null,
-			Rec__Ser__Days: null,
-			YW_Ser__Days: null,
-			Property_Address: null
-		},
-
-		show_hauler_data: false,
-
-		garbageDays: null,
-		nextGarbageDays: [],
-		recycleDays: null,
-		nextRecycleDays: [],
-		yardWasteDays: null,
-		nextYardWasteDays: [],
-
 		index: [
 			{
-				ids: ['WASTE MANAGEMENT', 'WASTE MANAGEMENT OF TAMPA'],
-				name: 'Waste Management of Tampa',
-				address: '3411 N 40th St,<br> Tampa, Fl 33605',
-				phone: '(813) 621-3053',
-				fax: '(813) 740-8210',
-				email: 'CentralFloridaService@wm.com'
-			},
-			{
+				id: null,
 				ids: ['REPUBLIC WASTE'],
 				name: 'Republic Services',
 				address: '5210 W Linebaugh Ave,<br> Tampa, Fl 33624',
 				phone: '(813) 265-0292',
 				fax: '(813) 961-3534',
-				email: 'republicservicesCSR@repsrv.com'
+				email: 'republicservicesCSR@repsrv.com',
+				website: 'http://republicservices.com'
 			},
 			{
+				id: null,
 				ids: ['WASTE CONNECTIONS', 'PROGRESSIVE WASTE SOLUTIONS'],
 				name: 'Waste Connections, Inc.',
 				address: '5135 Madison Ave,<br> Tampa, Fl 33619',
 				phone: '(813) 248-3802',
 				fax: '(813) 248-3606',
-				email: 'cs-tampa@progressivewaste.com'
+				email: 'cs-tampa@progressivewaste.com',
+				website: 'http://progressivewaste.com'
+			},
+			{
+				id: 4,
+				ids: ['WASTE MANAGEMENT', 'WASTE MANAGEMENT OF TAMPA'],
+				name: 'Waste Management of Tampa',
+				address: '3411 N 40th St,<br> Tampa, Fl 33605',
+				phone: '(813) 621-3053',
+				fax: '(813) 740-8210',
+				email: 'CentralFloridaService@wm.com',
+				website: 'http://wm.com'
 			}
 		]
 	},
-	actions: {
-		fetchHaulerInfo ({commit, state}, folio) {
-			return new Promise((resolve, reject) => {
-				esriLoader.dojoRequire([
-					"esri/tasks/QueryTask",
-					"esri/tasks/support/Query"
-				], (QueryTask, Query) => {
-					var queryTask = new QueryTask({
-						url: state.endpoint
-					})
-					var query = new Query()
-					query.where = 'FolioNo=' + folio
-					query.outFields = ['*']
-
-					queryTask.execute(query).then( (response) => {
-						if (response.features.length) {
-							commit('setHaulerData', response.features[0].attributes)
-							commit('showHaulerData', true)
-							resolve()
-						} else {
-							throw 'no-sw-info'
-						}
-					}).otherwise( (err) => {
-						// console.error(err)
-						commit('showHaulerData', false)
-						commit('showAlert', err)
-						resolve()
-					})
-
-				});
-			})
-		}
-	},
-	mutations: {
-		setHaulerData (state, data) {
-			state.hauler_data = data
-			//
-			state.garbageDays = getDaysOfWeek(state.hauler_data.Gar__Ser__Days)
-			state.nextGarbageDays = nextPickupDays(state.hauler_data.Gar__Ser__Days)
-			state.recycleDays = getDaysOfWeek(state.hauler_data.Rec__Ser__Days)
-			state.nextRecycleDays = nextPickupDays(state.hauler_data.Rec__Ser__Days, true)
-			state.yardWasteDays = getDaysOfWeek(state.hauler_data.YW_Ser__Days)
-			state.nextYardWasteDays = nextPickupDays(state.hauler_data.YW_Ser__Days)
-		},
-		showHaulerData (state, bool) {
-			state.show_hauler_data = bool
-		}
-	},
 	getters: {
-		provider (state) {
-			return _.chain(state.index).filter( (p) => {
-				return _.contains(p.ids, state.hauler_data.Service__Area)
-			}).first().value()
+		myProvider: (state, getters, rootState) => {
+			if (rootState.answer) {
+				return _.chain(state.index).filter( provider => {
+					return _.contains(provider.ids, rootState.answer.Service__Area)
+				}).first().value()
+			} else {
+				return null
+			}
+		},
+		daysOfWeek: (state, getters) => (str) => {
+			var milidays = _.map(strToDowIntsArr(str), (dow) => {
+				return nextXday(dow)
+			})
+			var dows = _.map(milidays, (d) => {
+				var date = new Date(d)
+				var options = { weekday: 'long' }
+				var date_str = date.toLocaleDateString('en-US', options)
+				return date_str.split(',')[0]+'s'
+			})
+			return dows.join(' & ')
+		},
+		nextPickupDays: (state, getters) => (search_str, is_recycling=false) => {
+			var milidays = _.map(strToDowIntsArr(search_str), (dow) => {
+				return nextXday(dow)
+			}).sort()
+
+			return _.map(milidays, (d) => {
+				var date = new Date(d)
+				var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+				var date_str = date.toLocaleDateString('en-US', options)
+				if (isHoliday(date, is_recycling)) { date_str = "HOLIDAY - NO PICKUP: " + date_str }
+				return date_str
+			})
 		}
 	}
 }
 
-// methods
+// helpers
+
+var strToDowIntsArr = function(search_str='') {
+	var dows = [
+		{str: 'sun', dow: 0},
+		{str: 'mon', dow: 1},
+		{str: 'tue', dow: 2},
+		{str: 'wed', dow: 3},
+		{str: 'thu', dow: 4},
+		{str: 'fri', dow: 5},
+		{str: 'sat', dow: 6}
+	]
+	return _.chain(dows).map((dow_obj) => {
+		return (search_str.toLowerCase().indexOf(dow_obj.str) >= 0) ? dow_obj.dow : false
+	}).compact().value()
+}
+
+var nextXday = function(dow) {
+	var d = new Date()
+	// var d = new Date('5/24/2017')
+	// var d = new Date('6/28/2017')
+	return d.setDate(d.getDate() + (dow + 7 - d.getDay()) % 7)
+}
+
 var isHoliday = function(test_date, is_recycling=false) {
 	var temp_date, date_d, date_m, date_w, date_wnum, date_str1, date_str2, date_str3
 
@@ -143,53 +133,4 @@ var isHoliday = function(test_date, is_recycling=false) {
 
 	// else
 	return false
-}
-
-var nextPickupDays = function(search_str, is_recycling=false) {
-	var milidays = _.map(strToDowIntsArr(search_str), (dow) => {
-		return nextXday(dow)
-	}).sort()
-
-	return _.map(milidays, (d) => {
-		var date = new Date(d)
-		var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-		var date_str = date.toLocaleDateString('en-US', options)
-		if (isHoliday(date, is_recycling)) { date_str = "HOLIDAY - NO PICKUP: " + date_str }
-		return date_str
-	})
-}
-
-var getDaysOfWeek = function(str) {
-	var milidays = _.map(strToDowIntsArr(str), (dow) => {
-		return nextXday(dow)
-	})
-	var dows = _.map(milidays, (d) => {
-		var date = new Date(d)
-		var options = { weekday: 'long' }
-		var date_str = date.toLocaleDateString('en-US', options)
-		return date_str.split(',')[0]+'s'
-	})
-	return dows.join(' & ')
-}
-
-var strToDowIntsArr = function(search_str='') {
-	var dows = [
-		{str: 'sun', dow: 0},
-		{str: 'mon', dow: 1},
-		{str: 'tue', dow: 2},
-		{str: 'wed', dow: 3},
-		{str: 'thu', dow: 4},
-		{str: 'fri', dow: 5},
-		{str: 'sat', dow: 6}
-	]
-	return _.chain(dows).map((dow_obj) => {
-		return (search_str.toLowerCase().indexOf(dow_obj.str) >= 0) ? dow_obj.dow : false
-	}).compact().value()
-}
-
-var nextXday = function(dow) {
-	var d = new Date()
-	// var d = new Date('5/24/2017')
-	// var d = new Date('6/28/2017')
-	return d.setDate(d.getDate() + (dow + 7 - d.getDay()) % 7)
 }

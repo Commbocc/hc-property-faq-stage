@@ -2,11 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import VueResource from 'vue-resource'
 import router from './router'
 import store from './store'
-
-Vue.use(VueResource)
 
 Vue.config.productionTip = false
 
@@ -20,6 +17,7 @@ new Vue({
 	template: '<App/>',
 	components: { App },
 	beforeMount () {
-		store.state.selected_question = appElem.getAttribute('data-selected-question') || window.selected_question || false
+		var qid = appElem.getAttribute('data-selected-question') || window.selected_question || false
+		store.dispatch('setQuestion', qid)
 	}
 })

@@ -1,44 +1,55 @@
-<template>
-	<div id="address-form">
-
-		<form @submit.prevent="search()">
-			<div class="form-group">
-				<div class="input-group input-group-md">
-					<input class="form-control" v-model="$store.state.inputAddress" :placeholder="$store.state.inputAddressPlaceholder" autocomplete="off" required>
-					<span class="input-group-btn">
-
-						<button class="btn" :class="btn_class" type="submit">
-							<i v-if="$store.state.is_address_loading" class="fa fa-spinner fa-spin fa-fw"></i>
-							<i v-else class="fa fa-fw fa-search"></i>
-							Find
-						</button>
-
-					</span>
-				</div>
+<template lang="html">
+	<form @submit.prevent="search">
+		<div class="form-group">
+			<div class="input-group input-group-lg">
+				<input class="form-control" v-model="$store.state.address.input" :placeholder="placeholder" autocomplete="off" required>
+				<span class="input-group-btn">
+					<button class="btn" :class="btnClass" type="submit">
+						<i :class="btnIcon"></i>
+						{{ btnText }}
+					</button>
+				</span>
 			</div>
-		</form>
-
-	</div>
+		</div>
+	</form>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 export default {
 	name: 'address-form',
-	methods: {
-		search () {
-			this.$store.dispatch('findAddress')
+	data () {
+		return {
+			placeholder: 'Your Street Address...'
 		}
 	},
 	computed: {
-		btn_class () {
-			return (this.$store.state.is_address_loading) ? 'btn-warning disabled' : 'btn-info'
+		...mapState({
+			loading: state => state.address.loading
+		}),
+		btnText () {
+			// return (this.loading) ? 'Loading' : 'Find'
+			return 'Find'
+		},
+		btnClass () {
+			return (this.loading) ? 'btn-warning' : 'btn-info'
+		},
+		btnIcon () {
+			return (this.loading) ? 'fa fa-fw fa-spinner fa-spin' : 'fa fa-fw fa-search'
+		}
+	},
+	methods: {
+		...mapActions([
+			'findAddress'
+		]),
+		search () {
+			this.findAddress().then(addressFound => {
+				if (addressFound) {
+					this.$router.replace({ name: 'Search' })
+				}
+			})
 		}
 	}
 }
 </script>
-
-<style scope>
-.btn {
-	white-space: nowrap;
-}
-</style>
