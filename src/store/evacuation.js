@@ -1,4 +1,4 @@
-export const evacuation_zones = {
+export default {
 	state: {
 		index: [
 			{

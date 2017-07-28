@@ -1,5 +1,5 @@
 <template lang="html">
-	<div class="embed-responsive embed-responsive-16by9 thumbnail">
+	<div class="embed-responsive embed-responsive-16by9">
 		<div id="mapDiv" class="embed-responsive-item"></div>
 	</div>
 </template>
@@ -12,8 +12,7 @@ export default {
 	data () {
 		return {
 			webmap: null,
-			mapview: null,
-			graphic: null,
+			mapview: null
 		}
 	},
 	mounted () {
@@ -46,7 +45,7 @@ export default {
 
 			// highlight parcel
 			var graphic = new Graphic({
-				geometry: this.$store.state.addr_form_resp_parcel_location,
+				geometry: this.$store.state.address.parcel.geometry,
 				symbol: new SimpleFillSymbol({
 					color: [0,0,0,0.15],
 					style: "solid",
@@ -57,13 +56,13 @@ export default {
 				})
 			})
 
-			// zoom to address
-			this.mapview.then( mv => {
-				var target = new Point(this.$store.state.addr_form_resp_location)
+			this.mapview.then(mv => {
+				// zoom to address
 				mv.goTo({
-					target,
+					target: graphic,
 					zoom: 18
 				})
+				// add graphic
 				mv.graphics.add(graphic);
 			})
 

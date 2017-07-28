@@ -1,79 +1,48 @@
 <template>
 	<div id="app">
 
+		<p v-if="devEnv">
+			<a href="./">
+				<img src="./assets/logo.png" class="img-responsive center-block">
+			</a>
+		</p>
+
 		<!-- <details><pre>{{ $store.state }}</pre></details> -->
 
 		<address-form></address-form>
 
-		<select-questions v-if="$store.state.show_questions"></select-questions>
+		<alert v-for="(item, index) in $store.state.alerts.active" :item="item" :key="index"></alert>
 
-		<alert v-for="item in $store.state.alerts.active" :item="item" :key="item"></alert>
-
-		<router-view v-if="!$store.state.is_result_loading"></router-view>
-		<div v-else class="text-center">
-			<p class="h1">
-				<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-			</p>
-		</div>
-
-		<!-- <hr class="visible-xs-block"> -->
+		<router-view></router-view>
 
 	</div>
 </template>
 
 <script>
-import AddressForm from '@/components/AddressForm'
-import SelectQuestions from '@/components/SelectQuestions'
+import { mapActions } from 'vuex'
 import Alert from '@/components/Alert'
+import AddressForm from '@/components/AddressForm'
 
 export default {
-	name: 'app',
 	components: {
-		'address-form': AddressForm,
-		'select-questions': SelectQuestions,
-		'alert': Alert,
+		Alert,
+		AddressForm
 	},
-	methods: {
-		checkIfAnswerable () {
-			if (!this.$store.state.selected_question && !this.$store.state.addr_form_resp_location) {
-				this.$store.dispatch('updateQuestion', this.$route.path.substring(1)).then(()=>{
-					this.$router.replace({ path: '/', query: this.$route.query })
-				})
-				return false
-			} else {
-				return true
-			}
-		}
-	},
-	watch: {
-		'$route': function() {
-			this.checkIfAnswerable()
-			this.$store.commit('clearAlerts')
-		},
-		'$store.getters.askWatcher': function() {
-			// console.log('askWatcher')
-			if ( this.checkIfAnswerable() ) {
-				this.$store.dispatch('askQuestion')
-			}
-		}
-	},
-	mounted () {
-		this.checkIfAnswerable()
-
-		//
-		if (this.$store.state.selected_question) {
-			this.$store.state.show_questions = false
-		} else if (parseInt(this.$route.query.qs) === 0) {
-			this.$store.state.show_questions = false
-		} else {
-			this.$store.state.show_questions = true
+	computed: {
+		devEnv () {
+			return process.env.NODE_ENV == 'development'
 		}
 	}
 }
 </script>
 
-<style media="screen">
-	#app {
-		margin-top: 10px;
-	}
+<style>
+#app {
+	/*font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
+	/*-webkit-font-smoothing: antialiased;*/
+	/*-moz-osx-font-smoothing: grayscale;*/
+	/*text-align: center;*/
+	/*color: #2c3e50;*/
+	margin-top: 10px;
+}
 </style>
