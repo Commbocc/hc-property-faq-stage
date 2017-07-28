@@ -2,7 +2,7 @@
 	<section v-if="answer" class="panel panel-info">
 
 		<header class="panel-heading">
-			<h4 class="text-center">
+			<h4 class="panel-title text-center">
 				{{ answer.NAME }}
 				<small>
 					({{ answer.PARTY }})
@@ -46,10 +46,7 @@ export default {
 </script>
 
 <style scoped>
-.panel-heading > h4 {
-	color: #fff !important;
-}
-.panel-heading > h4 > small {
-	color: #fff !important;
+.panel-title {
+	font-size: 24px;
 }
 </style>
