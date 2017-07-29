@@ -6,7 +6,9 @@
 				<span class="input-group-btn">
 					<button class="btn" :class="btnClass" type="submit">
 						<i :class="btnIcon"></i>
-						{{ btnText }}
+						<span class="hidden-xs">
+							{{ btnText }}
+						</span>
 					</button>
 				</span>
 			</div>
