@@ -3,7 +3,9 @@
 
 		<input type="hidden" name="form" :value="formstack.form" />
 		<input type="hidden" name="viewkey" :value="formstack.viewkey" />
-		<input type="hidden" :name="formstack.field_address" :value="$store.state.addr_form_resp_addr" />
+		<input type="hidden" :name="formstack.field_address" :value="$store.state.address.input" />
+		<input type="hidden" :name="formstack.field_folio" :value="$store.state.address.folio" />
+		<input type="hidden" :name="formstack.field_endpoint" :value="endpoint" />
 		<input type="hidden" :name="formstack.field_url" :value="currentPage" />
 		<input type="hidden" :name="formstack.field_state" :value="JSON.stringify(stateData, null, '\t')" />
 
@@ -22,6 +24,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import _ from 'lodash'
 
 export default {
@@ -35,21 +38,29 @@ export default {
 				viewkey: 'J7qwJEECVj',
 				field_address: 'address',
 				field_url: 'url',
-				field_state: 'application_state',
+				field_folio: 'folio',
+				field_endpoint: 'endpoint',
+				field_state: 'application_state'
 			}
 		}
 	},
 	computed: {
+		...mapGetters([
+			'questionById'
+		]),
 		currentPage () {
 			return window.location.href
+		},
+		endpoint () {
+			return this.questionById('hauler').endpoint
 		},
 		stateData () {
 			return _.pick(this.$store.state, [
 				'answer',
 				'alerts.active',
 				'address.input',
-				'address.parcel.attributes',
-				'address.geoResponse',
+				'address.folio',
+				'address.geoResponse'
 			])
 		}
 	}

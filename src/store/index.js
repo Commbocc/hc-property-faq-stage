@@ -31,13 +31,13 @@ export default new Vuex.Store({
 			return {
 				name: routeName,
 				params: {
-					folio: state.address.parcel.attributes.FOLIO,
+					folio: state.address.folio,
 					question_id: qid
 				}
 			}
 		},
 		ensureParcelLoaded ({state, dispatch}, folio) {
-			if (state.address.parcel && state.address.parcel.attributes.FOLIO == folio) {
+			if (state.address.parcel && state.address.folio == folio) {
 				return true
 			} else {
 				return dispatch('fetchParcel', folio).then(bool => {

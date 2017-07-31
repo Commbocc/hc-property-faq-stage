@@ -38,11 +38,11 @@ export default {
 	},
 	data () {
 		return {
+			loading: false,
 			activeResult: null
 		}
 	},
 	computed: mapState({
-		loading: state => state.questions.isAsking,
 		answer: state => state.answer
 	}),
 	methods: {
@@ -50,12 +50,14 @@ export default {
 			'askQuestion'
 		]),
 		init () {
+			this.loading = true
 			this.activeResult = null
 			this.askQuestion(this.question_id).then(x => {
-				this.activeResult = this.question_id
 				if (this.answer === false && this.question_id == 'hauler') {
 					this.$router.replace({name: 'HaulerNotFound'})
 				}
+				this.loading = false
+				this.activeResult = this.question_id
 			})
 		}
 	},

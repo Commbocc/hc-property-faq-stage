@@ -3,16 +3,15 @@ import * as esriLoader from 'esri-loader'
 export default {
 	state: {
 		input: '',
-		loading: false,
 		geoResponse: {
 			address: null,
 			location: null
 		},
-		parcel: null
+		parcel: null,
+		folio: null
 	},
 	actions: {
 		findAddress ({state, commit, dispatch}) {
-			commit('setAddressLoading', true)
 			commit('clearAlerts')
 			return new Promise((resolve, reject) => {
 				esriLoader.dojoRequire([
@@ -29,16 +28,12 @@ export default {
 					}).then( response => {
 						if (response.length) {
 							commit('setAddress', response[0])
-							dispatch('fetchParcel').then(result => {
-								commit('setAddressLoading', false)
-								resolve(result)
-							})
+							resolve(true)
 						} else {
 							throw 'address-not-found'
 						}
 					}).otherwise( err => {
-						commit('showAlert', err)
-						commit('setAddressLoading', false)
+						// console.error(err)
 						resolve(false)
 					})
 
@@ -73,7 +68,7 @@ export default {
 							throw 'parcel-not-found'
 						}
 					}).otherwise( err => {
-						commit('showAlert', err)
+						// console.error(err)
 						resolve(false)
 					})
 				});
@@ -81,15 +76,13 @@ export default {
 		}
 	},
 	mutations: {
-		setAddressLoading (state, data) {
-			state.loading = data
-		},
 		setAddress (state, data) {
 			state.geoResponse.address = data.address
 			state.geoResponse.location = data.location
 		},
 		setParcel (state, data) {
 			state.parcel = data
+			state.folio = data.attributes.FOLIO
 			state.input = data.attributes.SITE_ADDR
 		}
 	}

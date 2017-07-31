@@ -16,6 +16,15 @@ export default new Router({
 		component: null
 	},
 	{
+		path: '/error',
+		name: 'Error',
+		component: null,
+		beforeEnter (to, from, next) {
+			store.state.address.input = to.query.q
+			next()
+		}
+	},
+	{
 		path: '/search',
 		name: 'Search',
 		beforeEnter (to, from, next) {

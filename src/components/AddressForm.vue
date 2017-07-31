@@ -6,7 +6,9 @@
 				<span class="input-group-btn">
 					<button class="btn" :class="btnClass" type="submit">
 						<i :class="btnIcon"></i>
-						{{ btnText }}
+						<span class="hidden-xs">
+							{{ btnText }}
+						</span>
 					</button>
 				</span>
 			</div>
@@ -15,19 +17,17 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
 	name: 'address-form',
 	data () {
 		return {
+			loading: false,
 			placeholder: 'Your Street Address...'
 		}
 	},
 	computed: {
-		...mapState({
-			loading: state => state.address.loading
-		}),
 		btnText () {
 			// return (this.loading) ? 'Loading' : 'Find'
 			return 'Find'
@@ -41,14 +41,41 @@ export default {
 	},
 	methods: {
 		...mapActions([
-			'findAddress'
+			'findAddress',
+			'fetchParcel'
+		]),
+		...mapMutations([
+			'clearAlerts',
+			'showAlert'
 		]),
 		search () {
+			this.loading = true
+			this.clearAlerts()
 			this.findAddress().then(addressFound => {
 				if (addressFound) {
-					this.$router.replace({ name: 'Search' })
+					this.fetchParcel().then(parcelFound => {
+						if (parcelFound) {
+							this.loading = false
+							this.$router.replace({ name: 'Search' })
+						} else {
+							this.throwErr('parcel-not-found')
+						}
+					})
+				} else {
+					this.throwErr('address-not-found')
 				}
 			})
+		},
+		throwErr (err) {
+			this.loading = false
+			this.$router.push({
+				name: 'Error',
+				query: {
+					error: err,
+					q: this.$store.state.address.input
+				}
+			})
+			this.showAlert(err)
 		}
 	}
 }
