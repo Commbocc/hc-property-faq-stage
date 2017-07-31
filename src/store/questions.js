@@ -3,7 +3,6 @@ import * as esriLoader from 'esri-loader'
 export default {
 	state: {
 		selected: null,
-		isAsking: false,
 		// question index
 		index: [
 			{
@@ -37,9 +36,6 @@ export default {
 	mutations: {
 		setSelected (state, data) {
 			state.selected = data
-		},
-		setIsAsing (state, data) {
-			state.isAsking = data
 		}
 	},
 	actions: {
@@ -50,7 +46,6 @@ export default {
 		},
 		askQuestion ({rootState, getters, commit}, questionId) {
 			commit('setAnswer', null)
-			commit('setIsAsing', true)
 			return new Promise( (resolve, reject) => {
 				esriLoader.dojoRequire([
 					"esri/tasks/QueryTask",
@@ -73,14 +68,12 @@ export default {
 					queryTask.execute(query).then(response => {
 						if (response.features.length) {
 							commit('setAnswer', response.features[0].attributes)
-							commit('setIsAsing', false)
 							resolve(true)
 						} else {
 							throw 'no-answer'
 						}
 					}).otherwise(err => {
 						// commit('showAlert', err)
-						commit('setIsAsing', false)
 						commit('setAnswer', false)
 						resolve(false)
 					})
