@@ -10,6 +10,7 @@ Vue.config.productionTip = false
 
 Vue.use(VueAnalytics, {
 	id: 'UA-63036279-9',
+	linkers: ['hcflgov.net', 'hillsboroughcounty.org', 'commbocc.github.io'],
 	router
 })
 
