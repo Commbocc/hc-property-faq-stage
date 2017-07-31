@@ -54,7 +54,7 @@ export default {
 					var query = new Query()
 
 					if (questionId == 'hauler') {
-						query.where = 'FolioNo=' + rootState.address.parcel.attributes.FOLIO
+						query.where = 'FolioNo=' + rootState.address.folio
 					} else {
 						query.geometry = rootState.address.parcel.geometry
 					}

@@ -7,7 +7,8 @@ export default {
 			address: null,
 			location: null
 		},
-		parcel: null
+		parcel: null,
+		folio: null
 	},
 	actions: {
 		findAddress ({state, commit, dispatch}) {
@@ -81,6 +82,7 @@ export default {
 		},
 		setParcel (state, data) {
 			state.parcel = data
+			state.folio = data.attributes.FOLIO
 			state.input = data.attributes.SITE_ADDR
 		}
 	}
