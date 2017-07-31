@@ -1,28 +1,28 @@
-<template>
-	<section v-if="$store.state.answer" class="commissioner">
+<template lang="html">
+	<section v-if="answer" class="panel panel-info">
 
-		<div class="alert alert-info">
-			<p class="h2 text-center">
-				{{ commissioner.name }}
-
+		<header class="panel-heading">
+			<h4 class="panel-title text-center">
+				{{ answer.NAME }}
 				<small>
-					({{ commissioner.party }})
-
-					<br>
-
-					District:
-					{{ commissioner.district }}
+					({{ answer.PARTY }})
 				</small>
-			</p>
+				<small>
+					<br>
+					District {{ answer.DISTRICT }}
+				</small>
+			</h4>
+		</header>
 
-			<ul class="list-inline text-center">
-				<li>
-					{{ commissioner.phone }}
-				</li>
-				<li>
-					<a :href="commissioner.website" target="_blank">Website</a>
-				</li>
-			</ul>
+		<div class="list-group small">
+			<a :href="`tel:${answer.PHONE}`" class="list-group-item">
+				<i class="fa fa-fw fa-phone"></i>
+				{{ answer.PHONE }}
+			</a>
+			<a :href="answer.WEBSITE" class="list-group-item">
+				<i class="fa fa-fw fa-globe"></i>
+				Website
+			</a>
 		</div>
 
 		<esri-web-map portalId="3df5b4b240e54308843253e13ed8f0f0"></esri-web-map>
@@ -31,32 +31,22 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import EsriWebMap from '@/components/esri/WebMap'
 
 export default {
-	name: 'commissioner-results',
+	name: 'commissioner',
 	components: {
-		'esri-web-map': EsriWebMap
+		EsriWebMap
 	},
-	computed: {
-		commissioner () {
-			if (this.$store.state.answer) {
-				return {
-					name: this.$store.state.answer.attributes.NAME,
-					party: this.$store.state.answer.attributes.PARTY,
-					district: this.$store.state.answer.attributes.DISTRICT,
-					phone: this.$store.state.answer.attributes.PHONE,
-					website: this.$store.state.answer.attributes.WEBSITE,
-				}
-			}
-		}
-	}
+	computed: mapState([
+		'answer'
+	])
 }
 </script>
 
 <style scoped>
-.h2 {
-	margin-top: 0;
-	font-size: 30px !important;
+.panel-title {
+	font-size: 24px;
 }
 </style>

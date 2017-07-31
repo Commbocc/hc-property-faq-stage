@@ -2,13 +2,16 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import VueResource from 'vue-resource'
 import router from './router'
-import { store } from './store'
-
-Vue.use(VueResource)
+import store from './store'
+import VueAnalytics from 'vue-analytics'
 
 Vue.config.productionTip = false
+
+Vue.use(VueAnalytics, {
+	id: 'UA-63036279-9',
+	router
+})
 
 var appElem = document.getElementById('app')
 
@@ -20,6 +23,7 @@ new Vue({
 	template: '<App/>',
 	components: { App },
 	beforeMount () {
-		store.state.selected_question = appElem.getAttribute('data-selected-question') || window.selected_question || false
+		var qid = appElem.getAttribute('data-selected-question') || window.selected_question || false
+		store.dispatch('setQuestion', qid)
 	}
 })
