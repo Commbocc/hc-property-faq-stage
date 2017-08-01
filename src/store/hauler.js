@@ -40,7 +40,7 @@ export default {
 		myProvider: (state, getters, rootState) => {
 			if (rootState.answer) {
 				return _.chain(state.index).filter( provider => {
-					return _.contains(provider.ids, rootState.answer.Service__Area)
+					return _.contains(provider.ids, rootState.answer.Provider)
 				}).first().value()
 			} else {
 				return null
