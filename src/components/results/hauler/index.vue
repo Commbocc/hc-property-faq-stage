@@ -2,65 +2,30 @@
 	<section v-if="answer" class="panel panel-default">
 		<header class="panel-heading">
 			<strong>Address:</strong>
-			{{ answer.Property_Address }}
+			{{ address }}
 		</header>
 		<div class="table-responsive">
 			<table class="table table-striped table-bordered">
 				<tbody>
-					<tr>
+					<tr v-for="section in haulerDataSections">
 						<td>
-							<strong>Trash Days</strong><br>
+							<strong>{{ section.text }}</strong><br>
 							<span class="small">
-								Next Pickups
+								Next Pickup(s)
 							</span>
 						</td>
 						<td>
 							<strong>
-								{{ daysOfWeek(answer.Gar__Ser__Days) }}
+								{{ daysOfWeek(section.days) }}
 							</strong>
 							<ul class="small list-unstyled">
-								<li v-for="date in nextPickupDays(answer.Gar__Ser__Days)">
+								<li v-for="date in nextPickupDays(section.days, section.isRecycle)">
 									{{ date }}
 								</li>
 							</ul>
 						</td>
 					</tr>
-					<tr>
-						<td>
-							<strong>Recycling Day</strong><br>
-							<span class="small">
-								Next Pickup
-							</span>
-						</td>
-						<td>
-							<strong>
-								{{ daysOfWeek(answer.Rec__Ser__Days) }}
-							</strong>
-							<ul class="small list-unstyled">
-								<li v-for="date in nextPickupDays(answer.Rec__Ser__Days, true)">
-									{{ date }}
-								</li>
-							</ul>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<strong>Yard Waste Day</strong><br>
-							<span class="small">
-								Next Pickup
-							</span>
-						</td>
-						<td>
-							<strong>
-								{{ daysOfWeek(answer.YW_Ser__Days) }}
-							</strong>
-							<ul class="small list-unstyled">
-								<li v-for="date in nextPickupDays(answer.YW_Ser__Days)">
-									{{ date }}
-								</li>
-							</ul>
-						</td>
-					</tr>
+
 					<tr>
 						<th>Provider</th>
 						<td>
@@ -84,13 +49,33 @@ export default {
 	},
 	computed: {
 		...mapState({
-			answer: state => state.answer
+			answer: state => state.answer,
+			address: state => state.answer.Property_Address
 		}),
 		...mapGetters([
 			'myProvider',
 			'nextPickupDays',
 			'daysOfWeek'
-		])
+		]),
+		haulerDataSections () {
+			return [
+				{
+					text: 'Trash Days',
+					days: this.answer.Gar__Ser__Days,
+					isRecycle: false
+				},
+				{
+					text: 'Recycling Day',
+					days: this.answer.Rec__Ser__Days,
+					isRecycle: true
+				},
+				{
+					text: 'Yard Waste Day',
+					days: this.answer.YW_Ser__Days,
+					isRecycle: false
+				}
+			]
+		}
 	}
 }
 </script>
