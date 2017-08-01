@@ -8,8 +8,8 @@ export default {
 			{
 				id: 'hauler',
 				text: 'What are my Trash Pickup days?',
-				// endpoint: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/InfoLayers/SW_HAULER_DATA2/MapServer/1'
-				endpoint: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/SolidWaste_Viewer/SolidWasteCustomerData/MapServer/1'
+				endpoint: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/InfoLayers/SW_HAULER_DATA2/MapServer/1'
+				// endpoint: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/SolidWaste_Viewer/SolidWasteCustomerData/MapServer/1'
 			},
 			{
 				id: 'flood-zone',
@@ -54,7 +54,7 @@ export default {
 					var query = new Query()
 
 					if (questionId == 'hauler') {
-						query.where = 'FolioNo=' + rootState.address.folio
+						query.where = 'Folio=' + rootState.address.folio
 					} else {
 						query.geometry = rootState.address.parcel.geometry
 					}

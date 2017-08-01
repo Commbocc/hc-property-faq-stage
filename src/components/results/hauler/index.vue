@@ -50,7 +50,7 @@ export default {
 	computed: {
 		...mapState({
 			answer: state => state.answer,
-			address: state => state.answer.Property_Address
+			address: state => state.answer.Address
 		}),
 		...mapGetters([
 			'myProvider',
@@ -61,17 +61,17 @@ export default {
 			return [
 				{
 					text: 'Trash Days',
-					days: this.answer.Gar__Ser__Days,
+					days: this.answer.Garbage,
 					isRecycle: false
 				},
 				{
 					text: 'Recycling Day',
-					days: this.answer.Rec__Ser__Days,
+					days: this.answer.Recycling,
 					isRecycle: true
 				},
 				{
 					text: 'Yard Waste Day',
-					days: this.answer.YW_Ser__Days,
+					days: this.answer.YardWaste,
 					isRecycle: false
 				}
 			]
