@@ -1,5 +1,5 @@
 <template lang="html">
-	<form method="post" action="https://www.formstack.com/forms/index.php" target="_blank">
+	<form class="form-inline" method="post" action="https://www.formstack.com/forms/index.php" target="_blank">
 
 		<input type="hidden" name="form" :value="formstack.form" />
 		<input type="hidden" name="viewkey" :value="formstack.viewkey" />
@@ -9,17 +9,11 @@
 		<input type="hidden" :name="formstack.field_url" :value="currentPage" />
 		<input type="hidden" :name="formstack.field_state" :value="JSON.stringify(stateData, null, '\t')" />
 
-		<details class="small">
-			<pre class="small">{{ stateData }}</pre>
-		</details>
+		<button type="submit" :class="btnClass">
+			<slot></slot>
+		</button>
 
-		<p class="text-center">
-			<button type="submit" class="btn btn-sm btn-info">
-				{{ btnText }}
-				<i class="fa fa-fw fa-1x fa-share" aria-hidden="true"></i>
-			</button>
-		</p>
-
+		<!-- <details class="small"><pre class="small" style="background:0;border:0;">{{ stateData }}</pre></details> -->
 	</form>
 </template>
 
@@ -29,9 +23,9 @@ import _ from 'lodash'
 
 export default {
 	name: 'feedback-form',
+	props: ['btnClass'],
 	data () {
 		return {
-			btnText: 'Submit Address',
 			// FormStack
 			formstack: {
 				form: '2719344',
@@ -66,3 +60,9 @@ export default {
 	}
 }
 </script>
+
+<style scoped lang="css">
+	.form-inline {
+		display: inline;
+	}
+</style>
