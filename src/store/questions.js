@@ -14,7 +14,7 @@ export default {
 			{
 				id: 'flood-zone',
 				text: 'What is my Flood Zone?',
-				endpoint: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/DSD_Viewer_Services/DSD_Viewer_Nature/MapServer/0'
+				endpoint: 'https://services.arcgis.com/apTfC6SUmnNfnxuF/ArcGIS/rest/services/Flood_Zones/FeatureServer/0'
 			},
 			{
 				id: 'commissioner',
@@ -24,7 +24,7 @@ export default {
 			{
 				id: 'evacuation-zone',
 				text: 'What is my Evacuation Zone?',
-				endpoint: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/Heat/Evaczones/MapServer/0'
+				endpoint: 'https://services.arcgis.com/apTfC6SUmnNfnxuF/arcgis/rest/services/Evacuation_Zones/FeatureServer/0'
 			},
 			{
 				id: 'wind-debris',
