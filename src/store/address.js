@@ -19,7 +19,8 @@ export default {
 				], (Locator) => {
 					var hcLocator = new Locator({
 						// url: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer",
-						url: "https://maps.hillsboroughcounty.org/arcgis/rest/services/Geocoding/DBO_composite_address_locator/GeocodeServer",
+						// url: "https://maps.hillsboroughcounty.org/arcgis/rest/services/Geocoding/DBO_composite_address_locator/GeocodeServer",
+						url: "https://maps.hillsboroughcounty.org/arcgis/rest/services/Geocoding/Composite_Address_Locator_WebApps/GeocodeServer",
 						outSpatialReference: {wkid: 102100}
 					})
 
